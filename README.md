@@ -2,9 +2,9 @@
 [![version](https://img.shields.io/badge/version-1.0.1-green.svg)](https://github.com/vaibhavpareek/docsec/)
 <img src="https://img.shields.io/badge/made%20with-python-red.svg" alt="made with python">
 
-*DocSec is a linux based python tool.It is designed to manage the secrets and credentials encrypted with the keys provided the OPEN SOURCE PROJECT (Vault). Vault is also installed on docker to provide the light weight service , it also helps in maintaining the vault robustly without the key loss even if it get down.*
+*DocSec is a linux based python tool.It is designed to manage the secrets and credentials encrypted with the keys which are  provided by the OPEN SOURCE PROJECT (Vault). Vault is also installed on docker to provide the light weight service , it also helps in maintaining the vault robustly without the loss of key even if container gets down. In this tool VAULT HTTP API has been used with the libraries of python to provide a TUI Tool for UI/UX.*
 
-![FeatSel Logo](/logo/logo.png)
+![DocSec Logo](/logo/logo.png)
 
 # Prerequisite 
 - [x]  Operating System  : Linux
@@ -20,7 +20,6 @@ git clone https://github.com/vaibhavpareek/docsec.git
 ```
 
 ## Environment Setup
-
 ``` 
 Follow these Steps to Configure your own vault with this python tool.(Locally)
 Same Steps can be followed on AWS Instance or Google GCP CLOUD Instance
@@ -47,7 +46,6 @@ docker volume create log_vol
 docker volume create data_vol
 ```
 
-
 ###### Step 5 : Run a Configured Container of Vault Image on Docker
 ```
 docker run -dit --cap-add=IPC_LOCK 
@@ -63,9 +61,22 @@ Replacable Variables(Including Brackets):
 4. <vault server name> : Replace with any name for the running container
 ```
 
+###### Step 6 : Run DocSec Tool 
+```
+python3 main.py
+```
+
+###### Step 7 : Manual or Help
+```
+Functionalities This Tool Provide
+1. Create Own Key from multiple encrypting algorithms.
+2. List All the Keys available in Vault.
+3. Encrypt data of any credential file. 
+4. Decrypt data of credential file to get back the original content.
+```
 
 ## License
- This project is licensed under the Apache License - see the [LICENSE.md](/LICENSE) file for details
+ This project is licensed under the GNU License - see the [LICENSE.md](/LICENSE) file for details
  
 ## Versioning 
 **Version : 1.0.1
@@ -75,3 +86,4 @@ Next Version :soon:**
 [![Linkedin](https://img.shields.io/badge/Linkedin-Vaibhav_Pareek-<COLOR>.svg)](https://www.linkedin.com/in/vaibhavvp/)
 
 ## [Demonstration of FeatSel](https://www.linkedin.com/posts/vaibhavvp_quarantinedayss-coding-linux-activity-6657516985062125568-x6a7)
+ 
