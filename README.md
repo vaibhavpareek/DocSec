@@ -14,7 +14,7 @@
 - [x]  Space : Around 50MB (Later depends on Dataset) 
 - [x]  Updates : Keep Code Updated by `git pull`
 
-## [Download](https://github.com/vaibhavpareek/docsec) the DocSec
+## [Download](https://github.com/vaibhavpareek/DocSec/archive/master.zip) the DocSec
 ```
 git clone https://github.com/vaibhavpareek/docsec.git
 ```
