@@ -11,7 +11,7 @@
 - [x]  Python3 : Installed and Configured
 - [x]  Permissions : Run as Root
 - [x]  RAM : >2GB(Prefer)
-- [x]  Space : Around 50MB (Later depends on Dataset) 
+- [x]  Space : Around 50MB (Later depends on Key Storage) 
 - [x]  Updates : Keep Code Updated by `git pull`
 
 ## [Download](https://github.com/vaibhavpareek/DocSec/archive/master.zip) the DocSec
@@ -66,7 +66,14 @@ Replacable Variables(Including Brackets):
 python3 main.py
 ```
 
-###### Step 7 : Manual or Help
+###### Step 7 : Manage Docker
+```
+1. docker container inspect <name of the vault server container>  (To inspect whole container)
+2. docker status <name of the vault server container>    (To check the running status of the container)
+3. docker stop/start/attach  <name of the vault server container>     (To Manage the running vault server)
+```
+
+###### Step 8 : Manual or Help
 ```
 Functionalities This Tool Provide
 1. Create Own Key from multiple encrypting algorithms.
