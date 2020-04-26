@@ -1,10 +1,10 @@
-from requests import post
+from requests import post,get
 from os import system,path
 import json
 from pyfiglet import Figlet
 from clint.textui import colored
 #The url of the running vault in docker , for the transit information exchange
-base_url = 'http://192.168.43.226:4545/v1/transit/'
+base_url = 'http://192.168.43.226:8200/v1/transit/'
 
 def banner():
 	banner1 = Figlet(font='basic')
@@ -22,7 +22,7 @@ def exit_banner():
 
 
 def keyInput():
-	ch = input("Enter Key Technique : ")
+	ch = input("Enter Key Technique (eg: rsa-4096) : ")
 	return ch
 
 
@@ -33,7 +33,8 @@ def menu():
 		Press 2 For Encrypting the data
 		Press 3 For Decrypting the data
 		Press 4 For Listing the keys
-		Press 5 Exit
+		Press 5 For Fetching Secrets
+		Press 6 Exit
 		""")
 
 	ch = int(input("Choice : "))
@@ -46,19 +47,22 @@ try:
 	while True:
 		system("clear")
 		banner()
+		ch = menu()
 		if(ch==1):
-			key_name = input("Enter the Key Name (eg: rsa-4096): ")
+			key_name = input("Enter the Key Name : ")
 			key_t = keyInput()
 			dt = {
 				 "type": str(key_t)
 	 			}
 			x = post(base_url+"keys/"+str(key_name),  data = dt, headers = headers)
-			print(x.text)
+			print("Successfully Created Key!")
+			input("Press Any Key to Continue..")
 		elif(ch==2):
 			key = input("Enter the Key Name : ")
 			fl = input("Enter the File Name (Location): ")
 			if(path.isfile(fl)==False):
 				print("No Such File Present in System")
+				input("Press Any Key to Continue..")
 			else:
 				system("base64 "+str(fl)+" > base_encrypt")
 				with open("base_encrypt") as f:
@@ -69,12 +73,14 @@ try:
 				with open("encrypt"+str(fl),"w+") as f:
 					f.write(js['data']['ciphertext'])
 				print("Done Encrypting! Encrypted file saved with the name : encrypt"+str(fl))		
-				system("rm a.txt base_encrypt")
+				system("rm "+str(fl)+" base_encrypt")
+				input("Press Any Key to Continue..")
 		elif(ch==3):
 			key = input("Enter the Key Name : ")
 			fl = input("Enter the File Name : ")
 			if(path.isfile(fl)==False):
 				print("No Such File Present in System")
+				input("Press Any Key to Continue..")
 			else:
 				with open(fl) as f:
 					de = f.readlines()
@@ -84,6 +90,7 @@ try:
 				plain = js['data']['plaintext']
 				system("echo "+ str(plain) + " | base64 -d > "+str(fl[int(fl.index("encrypt") + len("encrypt")):]))
 				print("Done Decrypting! Orginal File has been saved with the name : "+str(fl[int(fl.index("encrypt") + len("encrypt")):]))
+				input("Press Any Key to Continue..")
 		elif(ch==4):
 			hd = "X-Vault-Token:"+str(token)
 			system("curl --header "+str(hd)+" --request LIST "+str(base_url)+"keys > key.json")
@@ -93,7 +100,19 @@ try:
 			for i in js['data']['keys']:
 				print(i)
 			system("rm key.json")
+			input("Press Any Key to Continue..")
 		elif(ch==5):
+			sec_name = input("Enter the Secret Name : ")
+			headers = {
+			"X-Vault-Token":"root"
+			}
+			x = get("http://192.168.43.226:4545/v1/secret/data/"+str(sec_name),  headers = headers)
+			js = x.json()
+			print("Secret Listed Below")
+			for key,value in js['data']['data'].items():
+				print(key , " : ", value)
+			input("Press Any Key to Continue..")
+		elif(ch==6):
 			exit_banner()
 			exit(0)
 except KeyboardInterrupt:
