@@ -4,7 +4,7 @@
 
 *DocSec is a linux based python tool.It is designed to manage the secrets and credentials encrypted with the keys which are  provided by the OPEN SOURCE PROJECT (Vault). Vault is also installed on docker to provide the light weight service , it also helps in maintaining the vault robustly without the loss of key even if container gets down. In this tool VAULT HTTP API has been used with the libraries of python to provide a TUI Tool for UI/UX.*
 
-![DocSec Logo](/logo/logo.png)
+![DocSec Logo](/logo/docsec.png)
 
 # Prerequisite 
 - [x]  Operating System  : Linux
@@ -47,13 +47,28 @@ docker volume create data_vol
 ```
 
 ###### Step 5 : Run a Configured Container of Vault Image on Docker
+## Development Mode (NON-PERSISTENT DATA)
 ```
 docker run -dit --cap-add=IPC_LOCK 
 -e 'VAULT_DEV_ROOT_TOKEN_ID=<vault token>' -e 'VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:<vault local port number>'
--v log_vol:/vault/logs -v data_vol:/vault/file
 -p <vault public port number>:<vault local port number>
 --name <vault server name>  vault:latest
-
+```
+## Server in Development Mode (PERSISTENT DATA)
+```
+docker run -dit --cap-add=IPC_LOCK
+-v data_vol:/vault/file -v log_vol:/vault/log
+-e 'VAULT_ADDR=http://127.0.0.1:8200' 
+-e 'VAULT_LOCAL_CONFIG={"backend":{"file":{
+                              "path":"/vault/file"
+                                          }
+                                  },
+                        "ui":true,
+                        "tls_disable":1}'
+-p <vault public port number>:<vault local port number>
+--name <vault server name>  vault:latest server -dev
+```
+```
 Replacable Variables(Including Brackets):
 1. <vault token> : Replace with Vault Token Value
 2. <vault local port number> : Provide any non-use Port Number Locally in Docker installed system(Default:8200)
@@ -67,10 +82,20 @@ python3 main.py
 ```
 
 ###### Step 7 : Manage Docker
+## Development Mode (NON-PERSISTENT DATA)
 ```
 1. docker container inspect <name of the vault server container>  (To inspect whole container)
 2. docker status <name of the vault server container>    (To check the running status of the container)
 3. docker stop/start/attach  <name of the vault server container>     (To Manage the running vault server)
+```
+## Server in Development Mode (PERSISTENT DATA)
+```
+docker exec -it <name of the vault server container> sh  ( To get the shell excess)
+1. vault status (To check the status)
+2. vault login token=<token value>
+3. vault operator init -> (To Initialize)
+4. vault auth enable -path=token (To enable token method of logging in)
+5. vault auth list (To list all the authentication methods)
 ```
 
 ###### Step 8 : Manual or Help
@@ -83,14 +108,14 @@ Functionalities This Tool Provide
 ```
 
 ## License
- This project is licensed under the GNU License - see the [LICENSE.md](/LICENSE) file for details
+ This project is licensed under the GPL License - see the [LICENSE.md](/LICENSE) file for details
  
 ## Versioning 
 **Version : 1.0.1
 Next Version :soon:**
 
 ## Contributor
-[![Linkedin](https://img.shields.io/badge/Linkedin-Vaibhav_Pareek-<COLOR>.svg)](https://www.linkedin.com/in/vaibhavvp/)
+[![Linkedin](https://img.shields.io/badge/Linkedin-Vaibhav_Pareek-blue.svg)](https://www.linkedin.com/in/vaibhavvp/)
 
-## [Demonstration of FeatSel](https://www.linkedin.com/posts/vaibhavvp_quarantinedayss-coding-linux-activity-6657516985062125568-x6a7)
+## [Demonstration of DocSec](/logo/docsec.mp4)
  
